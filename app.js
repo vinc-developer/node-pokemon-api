@@ -7,7 +7,6 @@ const app = express();
 const port = process.env.PORT || 4500;
 
 app.use(favicon( __dirname + '/favicon.ico'));
-app.use(morgan('dev'));
 app.use(bodyParser.json());
 
 sequelize.initDb();
