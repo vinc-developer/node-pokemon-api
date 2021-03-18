@@ -4,17 +4,27 @@ const UserModel = require('../models/user');
 const pokemons = require('./mock-pokemon');
 const bcrypt = require('bcrypt');
 
-const sequelize = new Sequelize('pokedex', 'root', '', {
-    host: 'localhost',
-    dialect: 'mysql',
-    logging: false
-})
+let sequelize;
+
+if(process.env.NODE_ENV === 'production'){
+    sequelize = new Sequelize('uvgfu83wbjnovf7c', 'bb7xiphg83490uyj', 'it9jl5n2ng7mpyeg', {
+        host: 'txlf3ljx3beaucz9x.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+        dialect: 'mysql',
+        logging: true
+    })
+}else{
+    sequelize = new Sequelize('pokedex', 'root', '', {
+        host: 'localhost',
+        dialect: 'mysql',
+        logging: false
+    })
+}
 
 const Pokemon = PokemonModel(sequelize, DataTypes)
 const User = UserModel(sequelize, DataTypes)
 
 const initDb = () => {
-    return sequelize.sync({force: true}).then( () => {
+    return sequelize.sync().then( () => {
         pokemons.map(pokemon => {
             Pokemon.create({
                 name: pokemon.name,
